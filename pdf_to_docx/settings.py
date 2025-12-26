@@ -108,7 +108,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://pdf-to-docx-2.onrender.com'
+    'https://pdf-to-docx-2.onrender.com',
 ]
 
 SESSION_COOKIE_SECURE = True
