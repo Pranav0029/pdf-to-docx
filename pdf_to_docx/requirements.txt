@@ -1,3 +1,0 @@
-Django==5.2.4
-PyMuPDF
-python-docx
