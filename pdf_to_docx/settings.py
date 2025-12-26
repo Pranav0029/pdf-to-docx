@@ -13,7 +13,8 @@ SECRET_KEY = 'django-insecure--14@v&(jjx+a6^)u+1jx62@9wclzo&fzzho8&oa$z@41dib!j*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pdf-to-docx-1.onrender.com']
+
 
 
 # Application definition
