@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Word Converter</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Modern Gradient Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Modern Transparent Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* The "Bestest" Card Style */
+        .converter-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin-top: 50px;
+            border: none;
+        }
+
+        /* Modern Upload Box */
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #f8fafc;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: #4facfe;
+            background: #f0f7ff;
+        }
+
+        /* Hide the actual file input but keep it functional */
+        .upload-area input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary-custom:hover {
+            transform: scale(1.02);
+            color: white;
+        }
+
+        .shriya-badge {
+            background: #fff5f5;
+            color: #e53e3e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#">
+                <i class="fa-solid fa-file-word me-2"></i>Welcome to PDF Converter
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container text-center mt-5">
+        <h1 class="fw-bold text-dark">Hello Users </h1>
+        <div class="shriya-badge">
+            <i class="fa-solid fa-heart me-1"></i>Upload Your PDF to convert into Doc!
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="converter-card">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="upload-area" id="drop-area">
+                    <i class="fa-solid fa-cloud-arrow-up fa-3x text-primary mb-3"></i>
+                    <h5 class="fw-bold">Choose your PDF</h5>
+                    <p class="text-muted small">Only .pdf files are supported</p>
+                    <input type="file" name="pdf_file" accept=".pdf" required id="fileInput">
+                </div>
+
+                <div id="file-name" class="text-center mt-3 text-success fw-bold"></div>
+
+                <button type="submit" class="btn btn-primary-custom w-100 mt-4 shadow">
+                    <i class="fa-solid fa-sync me-2"></i> Convert and Download
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="text-center mt-5 mb-4 text-muted small">
+        &copy; 2025 | Handcrafted for Pranav
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Shows the filename once the file is picked
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                fileNameDisplay.innerHTML = `<i class="fa-solid fa-check-circle"></i> Selected: ${this.files[0].name}`;
+            }
+        });
+    </script>
+
+</body>
+</html>
