@@ -13,8 +13,7 @@ SECRET_KEY = 'django-insecure--14@v&(jjx+a6^)u+1jx62@9wclzo&fzzho8&oa$z@41dib!j*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pdf-to-docx-1.onrender.com', 'pdf-to-docx-2.onrender.com', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = ['converter',
     'django.contrib.admin',
