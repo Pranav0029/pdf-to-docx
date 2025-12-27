@@ -1,28 +1,42 @@
-from django.shortcuts import render
-import fitz
-from django.http import HttpResponse
-from docx import Document
 import os
+from django.shortcuts import render
+from django.http import HttpResponse
+from pdf2docx import Converter
+import tempfile
+
 
 def home(request):
     if request.method == "POST":
         uploaded_file = request.FILES['pdf_file']
-        name_only, extension = os.path.splitext(uploaded_file.name)
-        new_filename = f"{name_only}.docx"
+        name_only, _ = os.path.splitext(uploaded_file.name)
 
-        pdf_bytes = uploaded_file.read()
-        pdf_doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
+            for chunk in uploaded_file.chunks():
+                temp_pdf.write(chunk)
+            temp_pdf_path = temp_pdf.name
 
-        word_doc = Document()
-        for page_num, page in enumerate(pdf_doc, start=1):
-            text = page.get_text()
-            word_doc.add_paragraph(text)
+        docx_file_path = temp_pdf_path.replace(".pdf", ".docx")
 
-        response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        )
-        response['Content-Disposition'] = f'attachment; filename="{new_filename}"'
-        word_doc.save(response)
-        return response
+        try:
+            cv = Converter(temp_pdf_path)
+            cv.convert(docx_file_path, start=0, end=None)
+            cv.close()
 
-    return render(request, 'index.html')
+            with open(docx_file_path, 'rb') as f:
+                docx_data = f.read()
+
+            response = HttpResponse(
+                docx_data,
+                content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+            response["Content-Disposition"] = f'attachment; filename="{name_only}.docx"'
+
+            return response
+
+        finally:
+            if os.path.exists(temp_pdf_path):
+                os.remove(temp_pdf_path)
+            if os.path.exists(docx_file_path):
+                os.remove(docx_file_path)
+
+    return render(request, "index.html")
